@@ -1,21 +1,57 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
+<!-- **city**, **start date**, **end date**, **price**, **status**, **color** -->
+<app-header></app-header>
+<div class="container">
+
+  <div class="row col-md-8 float-left" style="padding-bottom:4px;padding-top:6px;">
+  <input id="startDate" value="" width="200" type="text" #start_date (click)="update_date_pro(start_date.value,'start_date')" readonly placeholder="Start Date"  class="px-2"/>
+  <input id="endDate" width="200" type="text" #end_date (click)="update_date_pro(end_date.value,'end_date')" placeholder="End Date" readonly class="ml-2" />
+  <button class="btn btn-primary ml-2" (click)="search()" >Search</button>
+  <button class="btn btn-default ml-2" id="reset" (click)="reset_search()">Reset</button>
+  </div>
+  <table class="table table-hover" >
+    <thead style="cursor:pointer">
+      <th>#</th>
+      <th (click)="sort('city')">City <i class="fas fa-sort float-right"></i></th>
+      <th (click)="sort('start_date')">Start date <i class="fas fa-sort float-right"></i></th>
+      <th (click)="sort('end_date')">End date <i class="fas fa-sort float-right"></i></th>
+      <th (click)="sort('price')">Price <i class="fas fa-sort float-right"></i></th>
+      <th (click)="sort('status')">Status <i class="fas fa-sort float-right"></i></th>
+      <th (click)="sort('color')">Color <i class="fas fa-sort float-right"></i></th>
+    </thead>
+    <tbody  *ngFor="let item of data_list.data; index as i">
+      <tr>
+        <td>{{i + 1}}</td>
+        <td>{{item.city}}</td>
+        <td>{{item.start_date}}</td>
+        <td>{{item.end_date}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.status}}</td>
+        <td>{{item.color}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table">
+    <tr>
+      <td>
+        <div class="row mx-auto float-right">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+              <li class="page-item" [ngClass]="{'disabled': (data_list.pre_page == null)?true:false}">
+                <a class="page-link" (click)="previou_page()" href="javascript:void(0)" tabindex="-1">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">{{data_list.page}}</a></li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">Of</a></li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">{{data_list.total_pages}}</a></li>
+              <li class="page-item" [ngClass]="{'disabled': (data_list.next_page == null)?true:false}">
+                <a class="page-link" (click)="next_page()" href="javascript:void(0)">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
 <router-outlet></router-outlet>
