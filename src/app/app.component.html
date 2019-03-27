@@ -3,14 +3,15 @@
 <!-- **city**, **start date**, **end date**, **price**, **status**, **color** -->
 <app-header></app-header>
 <div class="container">
-
   <div class="row col-md-8 float-left" style="padding-bottom:4px;padding-top:6px;">
-  <input id="startDate" value="" width="200" type="text" #start_date (click)="update_date_pro(start_date.value,'start_date')" readonly placeholder="Start Date"  class="px-2"/>
-  <input id="endDate" width="200" type="text" #end_date (click)="update_date_pro(end_date.value,'end_date')" placeholder="End Date" readonly class="ml-2" />
-  <button class="btn btn-primary ml-2" (click)="search()" >Search</button>
-  <button class="btn btn-default ml-2" id="reset" (click)="reset_search()">Reset</button>
+    <input id="startDate" value="" width="200" type="text" #start_date
+      (click)="update_date_pro(start_date.value,'start_date')" readonly placeholder="Start Date" class="px-2" />
+    <input id="endDate" width="200" type="text" #end_date (click)="update_date_pro(end_date.value,'end_date')"
+      placeholder="End Date" readonly class="ml-2" />
+    <button class="btn btn-primary ml-2" (click)="search()">Search</button>
+    <button class="btn btn-default ml-2" id="reset" (click)="reset_search()">Reset</button>
   </div>
-  <table class="table table-hover" >
+  <table class="table table-hover">
     <thead style="cursor:pointer">
       <th>#</th>
       <th (click)="sort('city')">City <i class="fas fa-sort float-right"></i></th>
@@ -20,9 +21,9 @@
       <th (click)="sort('status')">Status <i class="fas fa-sort float-right"></i></th>
       <th (click)="sort('color')">Color <i class="fas fa-sort float-right"></i></th>
     </thead>
-    <tbody  *ngFor="let item of data_list.data; index as i">
+    <tbody *ngFor="let item of data_list.data; index as i">
       <tr>
-        <td>{{i + 1}}</td>
+        <td>{{item.id}}</td>
         <td>{{item.city}}</td>
         <td>{{item.start_date}}</td>
         <td>{{item.end_date}}</td>

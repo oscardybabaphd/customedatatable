@@ -33,7 +33,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
-
     Swal.fire({ text: "Loading results.." });
     Swal.showLoading();
     // pull data from server for now use mock data
@@ -41,16 +40,19 @@ export class AppComponent implements OnInit {
     Swal.close();
     //console.log("data=>",this.data_list);
   }
+
   get_data = (): void => {
     this.data_list = this.paginator(this._data.get_mock_data(), 1, 10);
     console.log(this.data_list);
   }
-  paginator = (items: Array<tbl_col>, page: number, per_page: number) => {
-    var page = page || 1, per_page = per_page || 10,
-      offset = (page - 1) * per_page,
-      paginatedItems = items.slice(offset).slice(0, per_page),
-      total_pages = Math.ceil(items.length / per_page);
-    var pages = new pager();
+
+  paginator = (items: Array<tbl_col>, _page: number, _per_page: number) => {
+    let page = _page || 1;
+    let per_page = _per_page || 10;
+    let offset = (page - 1) * per_page;
+    let paginatedItems = items.slice(offset).slice(0, per_page);
+    let total_pages = Math.ceil(items.length / per_page);
+    let pages = new pager();
     pages.page = page;
     pages.per_page = per_page;
     pages.pre_page = page - 1 ? page - 1 : null;
@@ -72,7 +74,6 @@ export class AppComponent implements OnInit {
       this.data_list = this.paginator(this._data.get_mock_data(), this.nxt_page, 10);
     }
     this.reset_sort();
-
   }
   // get prevous data set
   previou_page = () => {
@@ -82,7 +83,6 @@ export class AppComponent implements OnInit {
       this.data_list = this.paginator(this._data.get_mock_data(), this.prev_page, 10);
     }
     this.reset_sort();
-
   }
   //compare method that perform the actual sorting of items
   compare = (a: number | string | Date, b: number | string | Date, isAsc: boolean) => {
@@ -107,7 +107,7 @@ export class AppComponent implements OnInit {
   // the method perform sorting
   sort = (key: string) => {
     //this.sort_direction_asc = !this.sort_direction_asc;
-    const isAsc = this.get_sort_direction(key);
+    let isAsc = this.get_sort_direction(key);
     console.log(isAsc);
     this.data_list.data = this.data_list.data.sort((a, b) => {
       switch (key) {
@@ -144,9 +144,8 @@ export class AppComponent implements OnInit {
   }
 
   search = () => {
-    console.log("start_date", this._start_date);
-    console.log("end_date", this._end_date);
-
+    //console.log("start_date", this._start_date);
+    //console.log("end_date", this._end_date);
     console.log(this._end_date);
     if (this._end_date != null && this._end_date != undefined && this._start_date != null && this._start_date != undefined) {
       Swal.fire({ text: "Loading results.." });
