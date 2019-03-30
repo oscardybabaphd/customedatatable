@@ -328,7 +328,6 @@ export class AppComponent implements OnInit {
     this.ngxSmartModalService.resetModalData('myModal');
     this.ngxSmartModalService.getModal('myModal').open();
     this.isviewmode = true;
-
     this.isviewmode_data = this.data_list.data.filter(x => x.id == id)[0];
   }
 
