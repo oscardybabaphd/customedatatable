@@ -48,7 +48,7 @@ Kindly import the database file to create table and seedin data directly using M
 
 
 
-## Angular Service config
+## Angular config
 
 If express server is configured to listen to port `3000` i.e `http://localhost:3000` no need to update angular base url service. if listen port is different kindly update the base url in `services.service.ts` file
 ````
@@ -58,6 +58,7 @@ If express server is configured to listen to port `3000` i.e `http://localhost:3
     constructor(private http: HttpClient) { }
     .......
   ````
+  `Run Development server` `> ng serve -o`
 
 ## Further help
 
