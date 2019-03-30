@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ServicesService } from './repository/services.service';
 import { pager, tbl_col } from './models/model';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
+import * as moment from 'moment';
+import { NgxSmartModalService } from 'ngx-smart-modal';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 
 
 @Component({
@@ -22,79 +27,84 @@ export class AppComponent implements OnInit {
   isAsc_start_date: boolean = false;
   isAsc_status: boolean = false;
   tem_search_list: Array<tbl_col>;
-  //calendar properties
-  public _start_date: Date;
-  public _end_date: Date;
+  _start_date: Date;
+  _end_date: Date;
+  temp_data: pager;
+  private subscription: Subscription;
+  status_list: Array<string> = ["Seldom", "Yearly", "Often", "Never", "Once", "Weekly", "Monthly", "Daily"];
+  modal_form: FormGroup;
+  submitted = false;
 
-  constructor(private _data: ServicesService) {
-
+  constructor(private _data: ServicesService, public ngxSmartModalService: NgxSmartModalService, private formbuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    Swal.fire({ text: "Loading results.." });
-    Swal.showLoading();
-    // pull data from server for now use mock data
     this.get_data();
-    Swal.close();
-    //console.log("data=>",this.data_list);
+
+    this.modal_form = this.formbuilder.group({
+      city: ["", Validators.required],
+      start_date: ["", Validators.required],
+      end_date: ["", Validators.required],
+      price: ["", Validators.required],
+      status: ["", Validators.required],
+      color: ["", Validators.required]
+    });
   }
+
+
 
   get_data = (): void => {
-    this.data_list = this.paginator(this._data.get_mock_data(), 1, 10);
-    console.log(this.data_list);
+    Swal.fire({ text: "Loading results.." });
+    Swal.showLoading();
+    this.subscription = this._data.get_all_record().subscribe((res) => {
+      this.data_list = res;
+      this.nxt_page = this.data_list.next_page;
+      this.prev_page = this.data_list.pre_page;
+    });
+    Swal.close();
   }
 
-  paginator = (items: Array<tbl_col>, _page: number, _per_page: number) => {
-    let page = _page || 1;
-    let per_page = _per_page || 10;
-    let offset = (page - 1) * per_page;
-    let paginatedItems = items.slice(offset).slice(0, per_page);
-    let total_pages = Math.ceil(items.length / per_page);
-    let pages = new pager();
-    pages.page = page;
-    pages.per_page = per_page;
-    pages.pre_page = page - 1 ? page - 1 : null;
-    pages.next_page = (total_pages > page) ? page + 1 : null;
-    pages.total = items.length;
-    pages.total_pages = total_pages;
-    pages.data = paginatedItems;
-    this.nxt_page = pages.next_page;
-    this.prev_page = pages.pre_page;
-    console.log(pages);
-    return pages;
-  }
-
-  // get next data set
   next_page = () => {
+    Swal.fire({ text: "Loading results.." });
+    Swal.showLoading();
     if (this.tem_search_list != null && this.tem_search_list.length > 0) {
-      this.data_list = this.paginator(this.tem_search_list, this.nxt_page, 10);
+      this.search(this.nxt_page, 10);
     } else {
-      this.data_list = this.paginator(this._data.get_mock_data(), this.nxt_page, 10);
+      this.subscription = this._data.get_all_record(this.nxt_page, 10).subscribe((res) => {
+        this.data_list = res;
+        this.nxt_page = this.data_list.next_page;
+        this.prev_page = this.data_list.pre_page;
+      });
     }
     this.reset_sort();
+    Swal.close();
   }
-  // get prevous data set
+
   previou_page = () => {
     if (this.tem_search_list != null && this.tem_search_list.length > 0) {
-      this.data_list = this.paginator(this.tem_search_list, this.prev_page, 10);
+      this.search(this.prev_page, 10);
     } else {
-      this.data_list = this.paginator(this._data.get_mock_data(), this.prev_page, 10);
+      console.log(this.prev_page);
+      this.subscription = this._data.get_all_record(this.prev_page, 10).subscribe((res) => {
+        this.data_list = res;
+        this.nxt_page = this.data_list.next_page;
+        this.prev_page = this.data_list.pre_page;
+        console.log(this.data_list);
+      });
     }
     this.reset_sort();
   }
-  //compare method that perform the actual sorting of items
+
   compare = (a: number | string | Date, b: number | string | Date, isAsc: boolean) => {
-    //check for date type object
     if (typeof (a) === 'object' && typeof (b) === 'object') {
+      console.log(a);
+      console.log(b);
       if (isAsc) {
         return Number(a) - Number(b);
       } else {
         return Number(b) - Number(a);
       }
     } else if (typeof (a) === 'string' && typeof (b) === 'string') {
-      //because of some special character use the localeCompare method
       if (isAsc) {
         return a.localeCompare(b);
       } else {
@@ -104,11 +114,13 @@ export class AppComponent implements OnInit {
       return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
     }
   }
-  // the method perform sorting
+
   sort = (key: string) => {
-    //this.sort_direction_asc = !this.sort_direction_asc;
+    if (this.data_list.data == null) {
+      return;
+    }
     let isAsc = this.get_sort_direction(key);
-    console.log(isAsc);
+
     this.data_list.data = this.data_list.data.sort((a, b) => {
       switch (key) {
         case 'city': return this.compare(a.city.toLowerCase(), b.city.toLowerCase(), isAsc);
@@ -121,7 +133,7 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  // reset all sort direction at every next page
+
   reset_sort = () => {
     this.isAsc_city = false;
     this.isAsc_color = false;
@@ -130,7 +142,7 @@ export class AppComponent implements OnInit {
     this.isAsc_start_date = false;
     this.isAsc_status = false;
   }
-  // sort by asc by default
+
   get_sort_direction = (prop: string): boolean => {
     switch (prop) {
       case 'city': return this.isAsc_city = !this.isAsc_city;
@@ -143,34 +155,21 @@ export class AppComponent implements OnInit {
     }
   }
 
-  search = () => {
-    //console.log("start_date", this._start_date);
-    //console.log("end_date", this._end_date);
-    console.log(this._end_date);
+  search = (page: number = 1, per_page: number = 10) => {
     if (this._end_date != null && this._end_date != undefined && this._start_date != null && this._start_date != undefined) {
       Swal.fire({ text: "Loading results.." });
       Swal.showLoading();
-      this.tem_search_list = this._data.get_mock_data().filter((item: tbl_col) => {
-        return (new Date(item.start_date).getDate() >= this._start_date.getDate()
-          && new Date(item.start_date).getDay() >= this._start_date.getDay()
-          && new Date(item.start_date).getFullYear() >= this._start_date.getFullYear()
-        ) && (new Date(item.end_date).getDate() <= this._end_date.getDate()
-          && new Date(item.end_date).getDay() <= this._end_date.getDay()
-          && new Date(item.end_date).getFullYear() <= this._end_date.getFullYear()
-          );
-      });
-      //debugger;
-      console.log(this.tem_search_list)
-      if (this.tem_search_list.length > 0) {
-        this.data_list = this.paginator(this.tem_search_list, 1, 10);
-        Swal.close();
-      } else {
-        Swal.fire({ text: "No record found for selected date range", type: "error" });
-      }
+      this.subscription = this._data.get_record_by_daterange(moment(this._start_date).format("YYYY-MM-DD"),
+        moment(this._end_date).format("YYYY-MM-DD"), page, per_page).subscribe((res) => {
+          this.data_list = res;
+          this.nxt_page = this.data_list.next_page;
+          this.prev_page = this.data_list.pre_page;
+          this.tem_search_list = res.data;
+          Swal.close();
+        });
     } else {
       Swal.fire({ text: "Search params empty", type: "error" });
     }
-    //this.data_list = new pager();
   }
   update_date_pro = (_date: string, key: string): void => {
     console.log(_date);
@@ -182,10 +181,65 @@ export class AppComponent implements OnInit {
       }
     }
   }
+
   reset_search = () => {
     this._end_date = null;
     this._start_date = null;
+    this.tem_search_list = null;
     this.get_data();
+  }
+
+
+  delete = (id: number) => {
+    console.log(id);
+  }
+
+  edit = (id: number) => {
+    this.ngxSmartModalService.resetModalData('myModal');
+    this.ngxSmartModalService.getModal('myModal').open();
+    this.ngxSmartModalService.setModalData(true, 'myModal');
+    let item = this.data_list.data.filter(x => x.id == id)[0];
+    this.modal_form.controls.price.setValue(item.price);
+    this.modal_form.controls.city.setValue(item.city);
+    this.modal_form.controls.start_date.setValue(moment(new Date(item.start_date)).format("YYYY-MM-DD"));
+    this.modal_form.controls.end_date.setValue(moment(new Date(item.end_date)).format("YYYY-MM-DD"));
+    this.modal_form.controls.color.setValue(item.color);
+    this.modal_form.controls.status.setValue(item.status);
+  }
+
+  add = () => {
+    console.log("am clicked");
+    this.ngxSmartModalService.resetModalData('myModal');
+    this.ngxSmartModalService.getModal('myModal').open();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+  update_item = () => {
+    this.submitted = true;
+    if (this.modal_form.invalid) {
+      return;
+    }
+  }
+
+  add_item = () => {
+    this.submitted = true;
+    if (this.modal_form.invalid) {
+      return;
+    }
+  }
+
+  close = () => {
+    this.ngxSmartModalService.getModal('myModal').close();
+    this.modal_form.reset();
+    this.submitted = false;
+  }
+  onDismiss = () => {
+    console.log("onclose");
+    this.modal_form.reset();
+    this.submitted = false;
   }
 
 

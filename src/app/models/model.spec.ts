@@ -1,7 +1,7 @@
-import { Model } from './model';
+import { pager } from './model';
 
-describe('Model', () => {
+describe('pager', () => {
   it('should create an instance', () => {
-    expect(new Model()).toBeTruthy();
+    expect(new pager()).toBeTruthy();
   });
 });
