@@ -1,6 +1,6 @@
 # DataTable Demo App
 
-This is a demo data table application using Angular7 ,Node.js and express 
+This is a demo(CRUD) data table application using Angular7 ,Node.js and express 
 ## Prerequisites
 - Node.js 
 - Express.js
