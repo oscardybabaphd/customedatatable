@@ -69,6 +69,8 @@ If express server is configured to listen to port `3000` i.e `http://localhost:3
 
   ![Delete](https://github.com/oscardybabaphd/customedatatable/blob/master/imageDemo/delete.JPG)
 
+  ![Delete](https://github.com/oscardybabaphd/customedatatable/blob/master/imageDemo/view.JPG)
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
