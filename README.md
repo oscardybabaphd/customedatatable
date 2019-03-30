@@ -7,7 +7,7 @@ This is a demo(CRUD) data table application using Angular7 ,Node.js and express
 - Mysql DB
 - Angular CLI
 
-> api is writen in express and Node and the demo app is written in 7.3.3. use this ([https://github.com/oscardybabaphd/express-api](https://github.com/oscardybabaphd/express-api)) link to naviagate to the api source repository 
+> api is writen in express and Node and the demo app is written in Angular 7.3.3. use this ([https://github.com/oscardybabaphd/express-api](https://github.com/oscardybabaphd/express-api)) link to naviagate to the api source repository 
 
 ### External library used
 - sweetalert2 `npm install sweetalert2`
