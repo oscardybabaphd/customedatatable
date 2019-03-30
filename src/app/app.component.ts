@@ -87,12 +87,10 @@ export class AppComponent implements OnInit {
     if (this.tem_search_list != null && this.tem_search_list.length > 0) {
       this.search(this.prev_page, 10);
     } else {
-      console.log(this.prev_page);
       this.subscription = this._data.get_all_record(this.prev_page, 10).subscribe((res) => {
         this.data_list = res;
         this.nxt_page = this.data_list.next_page;
         this.prev_page = this.data_list.pre_page;
-        console.log(this.data_list);
       });
     }
     this.reset_sort();
@@ -100,8 +98,6 @@ export class AppComponent implements OnInit {
 
   compare = (a: number | string | Date, b: number | string | Date, isAsc: boolean) => {
     if (typeof (a) === 'object' && typeof (b) === 'object') {
-      console.log(a);
-      console.log(b);
       if (isAsc) {
         return Number(a) - Number(b);
       } else {
