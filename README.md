@@ -1,26 +1,63 @@
-# DatatableApp
+# DataTable Demo App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.3.
+This is a demo data table application using Angular7 ,Node.js and express 
+## Prerequisites
+- Node.js 
+- Express.js
+- Mysql DB
+- Angular CLI
 
-## Development server
+> api is writen in express and Node and the demo app is written in 7.3.3. use this ([https://github.com/oscardybabaphd/express-api](https://github.com/oscardybabaphd/express-api)) link to naviagate to the api source repository 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+### External library used
+- sweetalert2 `npm install sweetalert2`
+- > sweetalert2 for pop up notification and loader
+- JQuery Calander `cdn reference in index.html`
+- > for calander inputs
+- ngx-smart-modal `npm install ngx-smart-modal`
+- > for modals pop ups
+- moment js `npm install moment`
+- > for date formating
 
-## Code scaffolding
+```
+Note: no need to install external dependency manually on installing of Node modules all external dependencies will be download automatically
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### Api configuration
+Api source code ([https://github.com/oscardybabaphd/express-api](https://github.com/oscardybabaphd/express-api)) 
 
-## Build
+`Runing express development server`
+```
+> nodemon
+```
+- Mysql configuration
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```
+const  db  =  mysql.createConnection({
+host:  'localhost',
+user:  'root',
+password:  '',
+database:  'datatable'
+});
+```
+`Database source file`
+-https://github.com/oscardybabaphd/express-api/tree/master/database
+```
+Kindly import the database file to create table and seedin data directly using Mysql database
+```
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+## Angular Service config
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+If express server is configured to listen to port `3000` i.e `http://localhost:3000` no need to update angular base url service. if listen port is different kindly update the base url in `services.service.ts` file
+````
+  export class ServicesService 
+  {
+    base_url = "http://localhost:3000";
+    constructor(private http: HttpClient) { }
+    .......
+  ````
 
 ## Further help
 
