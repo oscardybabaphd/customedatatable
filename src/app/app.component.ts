@@ -7,8 +7,6 @@ import * as moment from 'moment';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -34,6 +32,10 @@ export class AppComponent implements OnInit {
   status_list: Array<string> = ["Seldom", "Yearly", "Often", "Never", "Once", "Weekly", "Monthly", "Daily"];
   modal_form: FormGroup;
   submitted = false;
+  isviewmode = true;
+  public isviewmode_data: tbl_col;
+  isdarkmode = false;
+  public themelabel: string = "Dark Mode"
 
   constructor(private _data: ServicesService, public ngxSmartModalService: NgxSmartModalService, private formbuilder: FormBuilder) {
   }
@@ -47,7 +49,8 @@ export class AppComponent implements OnInit {
       end_date: ["", Validators.required],
       price: ["", Validators.required],
       status: ["", Validators.required],
-      color: ["", Validators.required]
+      color: ["", Validators.required],
+      id: [""]
     });
   }
 
@@ -189,9 +192,32 @@ export class AppComponent implements OnInit {
     this.get_data();
   }
 
-
   delete = (id: number) => {
-    console.log(id);
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this item!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire({ text: "Loading results.." });
+        Swal.showLoading();
+        this.subscription = this._data.delete_record(id).subscribe((res) => {
+          if (res.status == "00") {
+            let index = this.data_list.data.findIndex(x => x.id == id);
+            this.data_list.data.splice(index, 1);
+            Swal.fire(
+              'Deleted!',
+              'Item has been deleted.',
+              'success'
+            )
+          }
+        })
+
+      }
+    })
   }
 
   edit = (id: number) => {
@@ -201,16 +227,19 @@ export class AppComponent implements OnInit {
     let item = this.data_list.data.filter(x => x.id == id)[0];
     this.modal_form.controls.price.setValue(item.price);
     this.modal_form.controls.city.setValue(item.city);
-    this.modal_form.controls.start_date.setValue(moment(new Date(item.start_date)).format("YYYY-MM-DD"));
-    this.modal_form.controls.end_date.setValue(moment(new Date(item.end_date)).format("YYYY-MM-DD"));
+    this.modal_form.controls.start_date.setValue(moment(item.start_date).format("YYYY-MM-DD"));
+    this.modal_form.controls.end_date.setValue(moment(item.end_date).format("YYYY-MM-DD"));
     this.modal_form.controls.color.setValue(item.color);
     this.modal_form.controls.status.setValue(item.status);
+    this.modal_form.controls.id.setValue(item.id);
+    this.isviewmode = false;
   }
 
   add = () => {
-    console.log("am clicked");
     this.ngxSmartModalService.resetModalData('myModal');
     this.ngxSmartModalService.getModal('myModal').open();
+    this.isviewmode = false;
+
   }
 
   ngOnDestroy(): void {
@@ -222,6 +251,38 @@ export class AppComponent implements OnInit {
     if (this.modal_form.invalid) {
       return;
     }
+    if (this.modal_form.touched) {
+      Swal.fire({ text: "Loading results.." });
+      Swal.showLoading();
+      let post_data: tbl_col = {
+        city: this.modal_form.controls.city.value,
+        color: this.modal_form.controls.color.value,
+        end_date: moment(this.modal_form.controls.end_date.value).format("YYYY/MM/DD"),
+        id: this.modal_form.controls.id.value,
+        price: this.modal_form.controls.price.value,
+        start_date: moment(this.modal_form.controls.start_date.value).format("YYYY/MM/DD"),
+        status: this.modal_form.controls.status.value
+      };
+      this.subscription = this._data.update_record(post_data).subscribe((res) => {
+        if (res.status == "00") {
+          let index = this.data_list.data.findIndex(x => x.id == post_data.id);
+          this.data_list.data[index].city = post_data.city;
+          this.data_list.data[index].price = post_data.price;
+          this.data_list.data[index].color = post_data.color;
+          this.data_list.data[index].status = post_data.status;
+          this.data_list.data[index].start_date = post_data.start_date;
+          this.data_list.data[index].end_date = post_data.end_date;
+          this.ngxSmartModalService.resetModalData('myModal');
+          this.ngxSmartModalService.getModal('myModal').close();
+          this.onDismiss();
+          Swal.fire({ text: "Update was successful", type: 'success' })
+          // Swal.close();
+        }
+
+      })
+
+    }
+
   }
 
   add_item = () => {
@@ -229,6 +290,28 @@ export class AppComponent implements OnInit {
     if (this.modal_form.invalid) {
       return;
     }
+    Swal.fire({ text: "Loading results.." });
+    Swal.showLoading();
+    let post_data: tbl_col = {
+      city: this.modal_form.controls.city.value,
+      color: this.modal_form.controls.color.value,
+      end_date: moment(this.modal_form.controls.end_date.value).format("YYYY/MM/DD"),
+      id: this.modal_form.controls.id.value,
+      price: this.modal_form.controls.price.value,
+      start_date: moment(this.modal_form.controls.start_date.value).format("YYYY/MM/DD"),
+      status: this.modal_form.controls.status.value
+    };
+
+    this.subscription = this._data.add_record(post_data).subscribe((res) => {
+      if (res.status == "00") {
+        post_data.id = res.id;
+        this.data_list.data.unshift(post_data);
+        Swal.fire({ text: "Item added successfully", type: 'success' });
+        this.ngxSmartModalService.resetModalData('myModal');
+        this.ngxSmartModalService.getModal('myModal').close();
+        this.onDismiss();
+      }
+    });
   }
 
   close = () => {
@@ -237,10 +320,25 @@ export class AppComponent implements OnInit {
     this.submitted = false;
   }
   onDismiss = () => {
-    console.log("onclose");
     this.modal_form.reset();
     this.submitted = false;
   }
 
+  view = (id: number) => {
+    this.ngxSmartModalService.resetModalData('myModal');
+    this.ngxSmartModalService.getModal('myModal').open();
+    this.isviewmode = true;
+
+    this.isviewmode_data = this.data_list.data.filter(x => x.id == id)[0];
+  }
+
+  switchtheme = () => {
+    this.isdarkmode = !this.isdarkmode;
+    if (this.isdarkmode) {
+      this.themelabel = "Light Mode";
+    } else {
+      this.themelabel = "Dark Mode";
+    }
+  }
 
 }
