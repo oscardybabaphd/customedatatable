@@ -60,6 +60,15 @@ If express server is configured to listen to port `3000` i.e `http://localhost:3
   ````
   `Run Development server` `> ng serve -o`
 
+  ### Sample screenshot
+  ![Main Table](https://github.com/oscardybabaphd/customedatatable/blob/master/imageDemo/main.JPG)
+
+  ![Add Item](https://github.com/oscardybabaphd/customedatatable/blob/master/imageDemo/new.JPG)
+
+  ![Update item](https://github.com/oscardybabaphd/customedatatable/blob/master/imageDemo/update.JPG)
+
+  ![Delete](https://github.com/oscardybabaphd/customedatatable/blob/master/imageDemo/delete.JPG)
+
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
