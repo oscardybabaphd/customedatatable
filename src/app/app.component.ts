@@ -262,17 +262,11 @@ export class AppComponent implements OnInit {
       this.subscription = this._data.update_record(post_data).subscribe((res) => {
         if (res.status == "00") {
           let index = this.data_list.data.findIndex(x => x.id == post_data.id);
-          this.data_list.data[index].city = post_data.city;
-          this.data_list.data[index].price = post_data.price;
-          this.data_list.data[index].color = post_data.color;
-          this.data_list.data[index].status = post_data.status;
-          this.data_list.data[index].start_date = post_data.start_date;
-          this.data_list.data[index].end_date = post_data.end_date;
+          this.data_list.data[index] = post_data;
           this.ngxSmartModalService.resetModalData('myModal');
           this.ngxSmartModalService.getModal('myModal').close();
           this.onDismiss();
           Swal.fire({ text: "Update was successful", type: 'success' })
-          // Swal.close();
         }
 
       })
