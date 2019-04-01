@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { tableColums, pager } from '../models/model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class ServicesService {
   public isAscPrice: boolean = false;
   public isAscStartdate: boolean = false;
   public isAscStatus: boolean = false;
-  private baseUrl = "http://localhost:3000";
+  private baseUrl = environment.baseUrl;
   public isDarkMode = false;
   public themeLabel: string = "Dark Mode"
   constructor(private http: HttpClient) { }
