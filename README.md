@@ -45,6 +45,13 @@ database:  'datatable'
 ```
 Kindly import the database file to create table and seedin data directly using Mysql database
 ```
+## Install XAMPP on Mac and Windows
+```
+installing xampp will install MySql Database
+```
+`Follow link for step by step installation guide` 
+- > `Mac Os` https://www.webucator.com/how-to/how-install-start-test-xampp-on-mac-osx.cfm
+- > `Windows` https://pureinfotech.com/install-xampp-windows-10/
 
 
 
