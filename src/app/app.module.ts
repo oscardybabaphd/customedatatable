@@ -8,11 +8,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { HttpErrorHandler } from './ErrorHandler/http-error-handler';
+import { PopUpModalComponent } from './modal/pop-up-modal/pop-up-modal.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    PopUpModalComponent,
 
   ],
   imports: [

@@ -2,103 +2,7 @@
 
 <!-- **city**, **start date**, **end date**, **price**, **status**, **color** -->
 <app-header></app-header>
-<ngx-smart-modal #myModal identifier="myModal" (onAnyCloseEvent)="onDismiss()">
-  <div *ngIf="!isViewMode">
-    <form [formGroup]="modalForm">
-      <input type="hidden" formControlName="id" />
-      <div class="form-group">
-        <label for="">City</label>
-        <input type="text" class="form-control" formControlName="city" placeholder="">
-        <div *ngIf="submitted && modalForm.controls.city.errors" class="has-error">
-          <div *ngIf="modalForm.controls.city.errors.required" style="color:red">City is required <i style="color:red"
-              class="fas fa-exclamation-circle"></i></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="">Price</label>
-        <input type="number" class="form-control" formControlName="price" placeholder="">
-        <div *ngIf="submitted && modalForm.controls.price.errors" class="has-error">
-          <div *ngIf="modalForm.controls.price.errors.required" style="color:red">Price is required
-            <i style="color:red" class="fas fa-exclamation-circle"></i></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="">Status</label>
-        <select class="form-control" formControlName="status">
-          <option *ngFor="let item of statusList" [selected]="modalForm.controls.status.value == item">
-            {{item}}</option>
-        </select>
-        <div *ngIf="submitted && modalForm.controls.status.errors" class="has-error">
-          <div *ngIf="modalForm.controls.status.errors.required" style="color:red">Status is required
-            <i style="color:red" class="fas fa-exclamation-circle"></i></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="">Start Date</label>
-        <input type="date" class="form-control" #startDateVal max="endDateVal.value" formControlName="startDate"
-          placeholder="">
-        <div *ngIf="submitted && modalForm.controls.startDate.errors" class="has-error">
-          <div *ngIf="modalForm.controls.start_date.errors.required" style="color:red">Start date is required
-            <i style="color:red" class="fas fa-exclamation-circle"></i></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="">End Date</label>
-        <input type="date" #endDateVal min="startDateVal.value" class="form-control" formControlName="endDate"
-          placeholder="">
-        <div *ngIf="submitted && modalForm.controls.end_date.errors" class="has-error">
-          <div *ngIf="modalForm.controls.end_date.errors.required" style="color:red">End date is required
-            <i style="color:red" class="fas fa-exclamation-circle"></i></div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="">Color</label>
-        <input class="form-control" type="text" formControlName="color" placeholder="">
-        <div *ngIf="submitted && modalForm.controls.color.errors" class="has-error">
-          <div *ngIf="modalForm.controls.color.errors.required" style="color:red">Color is required
-            <i style="color:red" class="fas fa-exclamation-circle"></i></div>
-        </div>
-      </div>
-    </form>
-    <button class="btn btn-primary float-left" *ngIf="myModal.hasData()" (click)="updateItem()"><i
-        class="far fa-save"></i> Update</button>
-    <button class="btn btn-success float-left" *ngIf="!myModal.hasData()" (click)="addItem()"><i
-        class="fas fa-plus"></i>
-      Add</button>
-    <button class="btn btn-default float-right" (click)="close()">Close</button>
-  </div>
-  <div *ngIf="isViewMode && isViewModeData">
-    <div class="container">
-      <table class="table table-striped">
-        <tr>
-          <td>City</td>
-          <td>{{isViewModeData.city}}</td>
-        </tr>
-        <tr>
-          <td>Price</td>
-          <td>{{isViewModeData.price}}</td>
-        </tr>
-        <tr>
-          <td>Status</td>
-          <td>{{isViewModeData.status}}</td>
-        </tr>
-        <tr>
-          <td>Color</td>
-          <td>{{isViewModeData.color}}</td>
-        </tr>
-        <tr>
-          <td>Start Date</td>
-          <td>{{isViewModeData.startDate | date: 'yyyy/MM/dd'}}</td>
-        </tr>
-        <tr>
-          <td>End Date</td>
-          <td>{{isViewModeData.endDate | date: 'yyyy/MM/dd'}}</td>
-        </tr>
-      </table>
-      <button class="btn btn-default float-right" (click)="close()">Close</button>
-    </div>
-  </div>
-</ngx-smart-modal>
+<pop-up-modal [dataList] = "dataList"></pop-up-modal>
 <div class="container table-responsive" *ngIf="dataList">
   <div class="row col-md-10 float-left" style="padding-bottom:4px;padding-top:6px;">
     <input id="startDate" value="" width="200" type="text" #startDate
@@ -107,10 +11,11 @@
       placeholder="End Date" readonly class="ml-2" />
     <button class="btn btn-primary ml-2" (click)="search()"><i class="fas fa-search"></i> Search</button>
     <button class="btn btn-default ml-2" id="reset" (click)="resetSearch()"><i class="fas fa-redo"></i> Reset</button>
-    <button class="btn btn-success ml-2" (click)="add()"><i class="fas fa-plus-circle"></i> Add</button>
-    <button class="btn btn-default ml-2" (click)="data.switchTheme()"><i class="fas fas fa-toggle-off"></i> {{data.themeLabel}}</button>
+    <button class="btn btn-success ml-2" (click)="modal.openAddModal()"><i class="fas fa-plus-circle"></i> Add</button>
+    <button class="btn btn-default ml-2" (click)="data.switchTheme()"><i class="fas fas fa-toggle-off"></i>
+      {{data.themeLabel}}</button>
   </div>
-  <table class="table table-hover" [class.table-dark] ="data.isDarkMode">
+  <table class="table table-hover" [class.table-dark]="data.isDarkMode">
     <thead style="cursor:pointer">
       <th>#</th>
       <th (click)="sort('city')">City <i class="fas fa-sort float-right"></i></th>
@@ -131,9 +36,9 @@
         <td>{{item.status}}</td>
         <td>{{item.color}}</td>
         <td>
-          <i class="fas fa-trash px-2" style="color:red;cursor: pointer" title="Delete" (click)="delete(item.id)"></i>
-          <i class="fas fa-edit px-2" style="color:blue;cursor: pointer" title="Edit" (click)="edit(item.id)"></i>
-          <i class="far fa-file px-2" style="color:indianred;cursor: pointer" title="View" (click)="view(item.id)"></i>
+          <i class="fas fa-trash px-2" style="color:red;cursor: pointer" title="Delete" (click)="modal.delete(item.id)"></i>
+          <i class="fas fa-edit px-2" style="color:blue;cursor: pointer" title="Edit" (click)="modal.edit(item.id)"></i>
+          <i class="far fa-file px-2" style="color:indianred;cursor: pointer" title="View" (click)="modal.view(item.id)"></i>
         </td>
       </tr>
     </tbody>
