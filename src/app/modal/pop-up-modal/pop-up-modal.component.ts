@@ -13,7 +13,7 @@ import { ServicesService } from 'src/app/repository/services.service';
   styleUrls: ['./pop-up-modal.component.css']
 })
 export class PopUpModalComponent implements OnInit, OnDestroy {
-  statusList: Array<string> = ["Seldom", "Yearly", "Often", "Never", "Once", "Weekly", "Monthly", "Daily"];
+  statusList: Array<string> = ["","Seldom", "Yearly", "Often", "Never", "Once", "Weekly", "Monthly", "Daily"];
   modalForm: FormGroup;
   submitted = false;
   isViewMode = true;

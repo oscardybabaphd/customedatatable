@@ -96,7 +96,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   updateDateProps = (date: string, key: string): void => {
-    console.log(date);
     if (date != "") {
       switch (key) {
         case 'startDate': this.startDate = new Date(date);
