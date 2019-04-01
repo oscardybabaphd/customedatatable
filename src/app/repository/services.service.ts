@@ -13,7 +13,7 @@ export class ServicesService {
   public isAscPrice: boolean = false;
   public isAscStartdate: boolean = false;
   public isAscStatus: boolean = false;
-  baseUrl = "http://localhost:3000";
+  private baseUrl = "http://localhost:3000";
   public isDarkMode = false;
   public themeLabel: string = "Dark Mode"
   constructor(private http: HttpClient) { }
