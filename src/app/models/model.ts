@@ -3,22 +3,22 @@ export class pager {
     constructor() {   
     }
     page: number;
-    per_page: number;
-    pre_page: number;
-    next_page: number;
+    perPage: number;
+    prePage: number;
+    nextPage: number;
     total: number;
-    total_pages: number;
-    data: Array<tbl_col>
+    totalPages: number;
+    data: Array<tableColums>
 }
 
-export class tbl_col {
+export class tableColums {
     constructor(){
 
     }
     id:number;
     city: string;
-    start_date: string;
-    end_date: string;
+    startDate: string;
+    endDate: string;
     price: string;
     status: string;
     color:string;

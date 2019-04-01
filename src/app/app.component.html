@@ -3,130 +3,130 @@
 <!-- **city**, **start date**, **end date**, **price**, **status**, **color** -->
 <app-header></app-header>
 <ngx-smart-modal #myModal identifier="myModal" (onAnyCloseEvent)="onDismiss()">
-  <div *ngIf="!isviewmode">
-    <form [formGroup]="modal_form">
+  <div *ngIf="!isViewMode">
+    <form [formGroup]="modalForm">
       <input type="hidden" formControlName="id" />
       <div class="form-group">
         <label for="">City</label>
         <input type="text" class="form-control" formControlName="city" placeholder="">
-        <div *ngIf="submitted && modal_form.controls.city.errors" class="has-error">
-          <div *ngIf="modal_form.controls.city.errors.required" style="color:red">City is required <i style="color:red"
+        <div *ngIf="submitted && modalForm.controls.city.errors" class="has-error">
+          <div *ngIf="modalForm.controls.city.errors.required" style="color:red">City is required <i style="color:red"
               class="fas fa-exclamation-circle"></i></div>
         </div>
       </div>
       <div class="form-group">
         <label for="">Price</label>
         <input type="number" class="form-control" formControlName="price" placeholder="">
-        <div *ngIf="submitted && modal_form.controls.price.errors" class="has-error">
-          <div *ngIf="modal_form.controls.price.errors.required" style="color:red">Price is required
+        <div *ngIf="submitted && modalForm.controls.price.errors" class="has-error">
+          <div *ngIf="modalForm.controls.price.errors.required" style="color:red">Price is required
             <i style="color:red" class="fas fa-exclamation-circle"></i></div>
         </div>
       </div>
       <div class="form-group">
         <label for="">Status</label>
         <select class="form-control" formControlName="status">
-          <option *ngFor="let item of status_list" [selected]="modal_form.controls.status.value == item">
+          <option *ngFor="let item of statusList" [selected]="modalForm.controls.status.value == item">
             {{item}}</option>
         </select>
-        <div *ngIf="submitted && modal_form.controls.status.errors" class="has-error">
-          <div *ngIf="modal_form.controls.status.errors.required" style="color:red">Status is required
+        <div *ngIf="submitted && modalForm.controls.status.errors" class="has-error">
+          <div *ngIf="modalForm.controls.status.errors.required" style="color:red">Status is required
             <i style="color:red" class="fas fa-exclamation-circle"></i></div>
         </div>
       </div>
       <div class="form-group">
         <label for="">Start Date</label>
-        <input type="date" class="form-control" #start_date_val max="end_date_val.value" formControlName="start_date"
+        <input type="date" class="form-control" #startDateVal max="endDateVal.value" formControlName="startDate"
           placeholder="">
-        <div *ngIf="submitted && modal_form.controls.start_date.errors" class="has-error">
-          <div *ngIf="modal_form.controls.start_date.errors.required" style="color:red">Start date is required
+        <div *ngIf="submitted && modalForm.controls.startDate.errors" class="has-error">
+          <div *ngIf="modalForm.controls.start_date.errors.required" style="color:red">Start date is required
             <i style="color:red" class="fas fa-exclamation-circle"></i></div>
         </div>
       </div>
       <div class="form-group">
         <label for="">End Date</label>
-        <input type="date" #end_date_val min="start_date_val.value" class="form-control" formControlName="end_date"
+        <input type="date" #endDateVal min="startDateVal.value" class="form-control" formControlName="endDate"
           placeholder="">
-        <div *ngIf="submitted && modal_form.controls.end_date.errors" class="has-error">
-          <div *ngIf="modal_form.controls.end_date.errors.required" style="color:red">End date is required
+        <div *ngIf="submitted && modalForm.controls.end_date.errors" class="has-error">
+          <div *ngIf="modalForm.controls.end_date.errors.required" style="color:red">End date is required
             <i style="color:red" class="fas fa-exclamation-circle"></i></div>
         </div>
       </div>
       <div class="form-group">
         <label for="">Color</label>
         <input class="form-control" type="text" formControlName="color" placeholder="">
-        <div *ngIf="submitted && modal_form.controls.color.errors" class="has-error">
-          <div *ngIf="modal_form.controls.color.errors.required" style="color:red">Color is required
+        <div *ngIf="submitted && modalForm.controls.color.errors" class="has-error">
+          <div *ngIf="modalForm.controls.color.errors.required" style="color:red">Color is required
             <i style="color:red" class="fas fa-exclamation-circle"></i></div>
         </div>
       </div>
     </form>
-    <button class="btn btn-primary float-left" *ngIf="myModal.hasData()" (click)="update_item()"><i
+    <button class="btn btn-primary float-left" *ngIf="myModal.hasData()" (click)="updateItem()"><i
         class="far fa-save"></i> Update</button>
-    <button class="btn btn-success float-left" *ngIf="!myModal.hasData()" (click)="add_item()"><i
+    <button class="btn btn-success float-left" *ngIf="!myModal.hasData()" (click)="addItem()"><i
         class="fas fa-plus"></i>
       Add</button>
     <button class="btn btn-default float-right" (click)="close()">Close</button>
   </div>
-  <div *ngIf="isviewmode && isviewmode_data">
+  <div *ngIf="isViewMode && isViewModeData">
     <div class="container">
       <table class="table table-striped">
         <tr>
           <td>City</td>
-          <td>{{isviewmode_data.city}}</td>
+          <td>{{isViewModeData.city}}</td>
         </tr>
         <tr>
           <td>Price</td>
-          <td>{{isviewmode_data.price}}</td>
+          <td>{{isViewModeData.price}}</td>
         </tr>
         <tr>
           <td>Status</td>
-          <td>{{isviewmode_data.status}}</td>
+          <td>{{isViewModeData.status}}</td>
         </tr>
         <tr>
           <td>Color</td>
-          <td>{{isviewmode_data.color}}</td>
+          <td>{{isViewModeData.color}}</td>
         </tr>
         <tr>
           <td>Start Date</td>
-          <td>{{isviewmode_data.start_date | date: 'yyyy/MM/dd'}}</td>
+          <td>{{isViewModeData.startDate | date: 'yyyy/MM/dd'}}</td>
         </tr>
         <tr>
           <td>End Date</td>
-          <td>{{isviewmode_data.end_date | date: 'yyyy/MM/dd'}}</td>
+          <td>{{isViewModeData.endDate | date: 'yyyy/MM/dd'}}</td>
         </tr>
       </table>
       <button class="btn btn-default float-right" (click)="close()">Close</button>
     </div>
   </div>
 </ngx-smart-modal>
-<div class="container table-responsive" *ngIf="data_list">
+<div class="container table-responsive" *ngIf="dataList">
   <div class="row col-md-10 float-left" style="padding-bottom:4px;padding-top:6px;">
-    <input id="startDate" value="" width="200" type="text" #start_date
-      (click)="update_date_pro(start_date.value,'start_date')" readonly placeholder="Start Date" class="px-2" />
-    <input id="endDate" width="200" type="text" #end_date (click)="update_date_pro(end_date.value,'end_date')"
+    <input id="startDate" value="" width="200" type="text" #startDate
+      (click)="updateDateProps(startDate.value,'startDate')" readonly placeholder="Start Date" class="px-2" />
+    <input id="endDate" width="200" type="text" #endDate (click)="updateDateProps(endDate.value,'endDate')"
       placeholder="End Date" readonly class="ml-2" />
     <button class="btn btn-primary ml-2" (click)="search()"><i class="fas fa-search"></i> Search</button>
-    <button class="btn btn-default ml-2" id="reset" (click)="reset_search()"><i class="fas fa-redo"></i> Reset</button>
+    <button class="btn btn-default ml-2" id="reset" (click)="resetSearch()"><i class="fas fa-redo"></i> Reset</button>
     <button class="btn btn-success ml-2" (click)="add()"><i class="fas fa-plus-circle"></i> Add</button>
-    <button class="btn btn-default ml-2" (click)="switchtheme()"><i class="fas fas fa-toggle-off"></i> {{themelabel}}</button>
+    <button class="btn btn-default ml-2" (click)="data.switchTheme()"><i class="fas fas fa-toggle-off"></i> {{data.themeLabel}}</button>
   </div>
-  <table class="table table-hover" [class.table-dark] ="isdarkmode">
+  <table class="table table-hover" [class.table-dark] ="data.isDarkMode">
     <thead style="cursor:pointer">
       <th>#</th>
       <th (click)="sort('city')">City <i class="fas fa-sort float-right"></i></th>
-      <th (click)="sort('start_date')">Start date <i class="fas fa-sort float-right"></i></th>
-      <th (click)="sort('end_date')">End date <i class="fas fa-sort float-right"></i></th>
+      <th (click)="sort('startDate')">Start date <i class="fas fa-sort float-right"></i></th>
+      <th (click)="sort('endDate')">End date <i class="fas fa-sort float-right"></i></th>
       <th (click)="sort('price')">Price <i class="fas fa-sort float-right"></i></th>
       <th (click)="sort('status')">Status <i class="fas fa-sort float-right"></i></th>
       <th (click)="sort('color')">Color <i class="fas fa-sort float-right"></i></th>
       <th>Action</th>
     </thead>
-    <tbody *ngFor="let item of data_list.data; index as i">
+    <tbody *ngFor="let item of dataList.data; index as i">
       <tr>
         <td>{{item.id}}</td>
         <td>{{item.city}}</td>
-        <td>{{item.start_date | date:"yyyy/MM/dd"}}</td>
-        <td>{{item.end_date | date:"yyyy/MM/dd"}}</td>
+        <td>{{item.startDate | date:"yyyy/MM/dd"}}</td>
+        <td>{{item.endDate | date:"yyyy/MM/dd"}}</td>
         <td>{{item.price}}</td>
         <td>{{item.status}}</td>
         <td>{{item.color}}</td>
@@ -137,7 +137,7 @@
         </td>
       </tr>
     </tbody>
-    <tbody *ngIf="!data_list.data">
+    <tbody *ngIf="!dataList.data">
       <tr style="text-align:center">
         <td colspan="7">
           <span>No record found for selected date range</span>
@@ -145,20 +145,20 @@
       </tr>
     </tbody>
   </table>
-  <table class="table" *ngIf="data_list.data">
+  <table class="table" *ngIf="dataList.data">
     <tr>
       <td>
         <div class="row mx-auto float-right">
           <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-end">
-              <li class="page-item" [ngClass]="{'disabled': (data_list.pre_page == null)?true:false}">
-                <a class="page-link" (click)="previou_page()" href="javascript:void(0)" tabindex="-1">Previous</a>
+              <li class="page-item" [ngClass]="{'disabled': (dataList.prePage == null)?true:false}">
+                <a class="page-link" (click)="gotoPreviousPage()" href="javascript:void(0)" tabindex="-1">Previous</a>
               </li>
-              <li class="page-item"><a class="page-link" href="javascript:void(0)">{{data_list.page}}</a></li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">{{dataList.page}}</a></li>
               <li class="page-item"><a class="page-link" href="javascript:void(0)">Of</a></li>
-              <li class="page-item"><a class="page-link" href="javascript:void(0)">{{data_list.total_pages}}</a></li>
-              <li class="page-item" [ngClass]="{'disabled': (data_list.next_page == null)?true:false}">
-                <a class="page-link" (click)="next_page()" href="javascript:void(0)">Next</a>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)">{{dataList.totalPages}}</a></li>
+              <li class="page-item" [ngClass]="{'disabled': (dataList.nextPage == null)?true:false}">
+                <a class="page-link" (click)="gotoNextPage()" href="javascript:void(0)">Next</a>
               </li>
             </ul>
           </nav>
