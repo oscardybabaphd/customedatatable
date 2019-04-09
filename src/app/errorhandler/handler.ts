@@ -7,13 +7,16 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import Swal from 'sweetalert2';
+import { Swalnotification } from '../repository/swalnotification';
 
-export class HttpErrorHandler implements HttpInterceptor {
+
+export class Handler implements HttpInterceptor {
+    private notify: Swalnotification;
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        this.notify = new Swalnotification();
         return next.handle(request)
             .pipe(
-                retry(1),
+                retry(6),
                 catchError((error: HttpErrorResponse) => {
                     let errorMessage = '';
                     if (error.error instanceof ErrorEvent) {
@@ -22,7 +25,7 @@ export class HttpErrorHandler implements HttpInterceptor {
                         //errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
                         errorMessage = error.message;
                     }
-                    Swal.fire({ text: errorMessage, type: 'error' })
+                    this.notify.dialog(false, { text: errorMessage, type: 'error' })
                     return throwError(errorMessage);
                 })
             )

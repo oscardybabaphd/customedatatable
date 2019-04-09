@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { tableColums, pager } from '../models/model';
+import { TableColums, Pager } from '../models/model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -8,39 +8,39 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ServicesService {
-  public isAscCity: boolean = false;
-  public isAscColor: boolean = false;
-  public isAscEnddate: boolean = false;
-  public isAscPrice: boolean = false;
-  public isAscStartdate: boolean = false;
-  public isAscStatus: boolean = false;
+  public isAscCity = false;
+  public isAscColor = false;
+  public isAscEnddate = false;
+  public isAscPrice = false;
+  public isAscStartdate = false;
+  public isAscStatus = false;
   private baseUrl = environment.baseUrl;
   public isDarkMode = false;
-  public themeLabel: string = "Dark Mode"
+  public themeLabel = 'Dark Mode';
   constructor(private http: HttpClient) { }
 
-  getAllRecord = (pageData: number = 1, perPageData: number = 10): Observable<pager> => {
-    let url = this.baseUrl + `/getall/${pageData}/${perPageData}`;
-    return this.http.get<pager>(url);
+  getAllRecord = (pageData: number = 1, perPageData: number = 10): Observable<Pager> => {
+    const url = this.baseUrl + `/getall/${pageData}/${perPageData}`;
+    return this.http.get<Pager>(url);
   }
 
-  getRecordByDateRange = (startDate: string, endDate: string, pageData: number = 1, perPageData: number = 10): Observable<pager> => {
-    let url = this.baseUrl + `/search/${startDate}/${endDate}/${pageData}/${perPageData}`;
-    return this.http.get<pager>(url);
+  getRecordByDateRange = (startDate: string, endDate: string, pageData: number = 1, perPageData: number = 10): Observable<Pager> => {
+    const url = this.baseUrl + `/search/${startDate}/${endDate}/${pageData}/${perPageData}`;
+    return this.http.get<Pager>(url);
   }
 
-  updateRecord = (item: tableColums): Observable<any> => {
-    let url = this.baseUrl + "/update";
+  updateRecord = (item: TableColums): Observable<any> => {
+    const url = this.baseUrl + '/update';
     return this.http.post(url, item);
   }
 
-  addRecord = (item: tableColums): Observable<any> => {
-    let url = this.baseUrl + "/add";
+  addRecord = (item: TableColums): Observable<any> => {
+    const url = this.baseUrl + '/add';
     return this.http.post(url, item);
   }
 
   deleteRecord = (id: number): Observable<any> => {
-    let url = this.baseUrl + `/delete/${id}`;
+    const url = this.baseUrl + `/delete/${id}`;
     return this.http.get(url);
   }
 
@@ -87,14 +87,14 @@ export class ServicesService {
   switchTheme = () => {
     this.isDarkMode = !this.isDarkMode;
     if (this.isDarkMode) {
-      this.themeLabel = "Light Mode";
+      this.themeLabel = 'Light Mode';
     } else {
-      this.themeLabel = "Dark Mode";
+      this.themeLabel = 'Dark Mode';
     }
   }
 
-  sortByKey = (isAsc: boolean, dataList: Array<tableColums>, key: string): Array<tableColums> => {
-    let listItems = dataList.sort((a, b) => {
+  sortByKey = (isAsc: boolean, dataList: Array<TableColums>, key: string): Array<TableColums> => {
+    const listItems = dataList.sort((a, b) => {
       switch (key) {
         case 'city': return this.compare(a.city.toLowerCase(), b.city.toLowerCase(), isAsc);
         case 'color': return this.compare(a.color.substring(1).toLowerCase(), b.color.substring(1).toLowerCase(), isAsc);
