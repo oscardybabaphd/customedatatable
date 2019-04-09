@@ -12,7 +12,7 @@ This is a demo(CRUD) data table application using Angular7 ,Node.js and express
 ### External library used
 - sweetalert2 `npm install sweetalert2`
 - > sweetalert2 for pop up notification and loader
-- JQuery Calander `cdn reference in index.html`
+-  ngx-daterangepicker-material `npm i ngx-daterangepicker-material`
 - > for calander inputs
 - ngx-smart-modal `npm install ngx-smart-modal`
 - > for modals pop ups
