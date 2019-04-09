@@ -16,7 +16,7 @@ export class Handler implements HttpInterceptor {
         this.notify = new Swalnotification();
         return next.handle(request)
             .pipe(
-                retry(6),
+                retry(1),
                 catchError((error: HttpErrorResponse) => {
                     let errorMessage = '';
                     if (error.error instanceof ErrorEvent) {
