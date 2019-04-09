@@ -113,7 +113,7 @@ export class PopupmodalComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.modalForm.touched) {
-      this.notify.dialog(true, { text: 'Loading results..' });
+      this.notify.dialog(true, { text: 'Processing please wait..' });
       let postData: TableColums = {
         city: this.modalForm.controls['city'].value,
         color: this.modalForm.controls['color'].value,
@@ -140,7 +140,7 @@ export class PopupmodalComponent implements OnInit, OnDestroy {
     if (this.modalForm.invalid) {
       return;
     }
-    this.notify.dialog(true, { text: 'Loading results..' });
+    this.notify.dialog(true, { text: 'Processing please wait..' });
     let postData: TableColums = {
       city: this.modalForm.controls['city'].value,
       color: this.modalForm.controls['color'].value,
